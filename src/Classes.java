@@ -1,4 +1,6 @@
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.image.*;
 import java.io.Serializable;
 import javax.swing.*;
@@ -116,3 +118,42 @@ class ImagePanel extends JPanel {
 		g.fillRect(x, y, scaledWidth, scaledHeight);
 	} //paintComponent()
 } //ImagePanel Class
+
+
+class TextLabel extends JLabel {
+	private static final long serialVersionUID = 1L;
+	private final String FONT_NAME = "dialog";
+	private String text;
+	private int weight;
+	private double multiplier;
+	
+	public TextLabel(String text, int align, int weight, double multiplier) {
+		super(text, align);
+		this.text = text;
+		this.weight = weight;
+		this.multiplier = multiplier;
+		addComponentListener( new LabelListener() );
+	}
+	
+	public TextLabel(String text, int weight, double multiplier) {
+		this(text, JLabel.LEFT, weight, multiplier);
+	}
+	
+	public TextLabel(String text, int weight) {
+		this(text, JLabel.LEFT, weight, 1);
+	}
+	
+	public TextLabel(String text) {
+		this(text, JLabel.LEFT, Font.PLAIN, 1);
+	}
+	
+	private class LabelListener extends ComponentAdapter {
+		@Override
+		public void componentResized(ComponentEvent e) {
+			int fontSize = (int)(getWidth() * multiplier);
+			Font font = new Font(FONT_NAME, weight, fontSize);
+			setFont(font);
+		}
+	} //LabelListener Class
+	
+}
