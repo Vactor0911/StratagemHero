@@ -14,12 +14,18 @@ public class Main {
 		return frame;
 	}
 	
-	public static GridBagConstraints getGbc(int x, int y, double weightX, double weightY) {
+	public static GridBagConstraints getGbc(int x, int y, double weightX, double weightY, int width, int height) {
 		gbc.gridx = x;
 		gbc.gridy = y;
 		gbc.weightx = weightX;
 		gbc.weighty = weightY;
+		gbc.gridwidth = width;
+		gbc.gridheight = height;
 		return gbc;
+	}
+	
+	public static GridBagConstraints getGbc(int x, int y, double weightX, double weightY) {
+		return getGbc(x, y, weightX, weightY, 1, 1);
 	}
 
 }

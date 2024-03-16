@@ -1,0 +1,380 @@
+[
+    {
+        "name" : "SOS Beacon",
+        "category" : "Mission",
+        "command" : "UDRU",
+        "image" : "rsc/Stratagem_Icons/sos_beacon.png"
+    },
+    {
+        "name" : "Seismic Probe",
+        "category" : "Mission",
+        "command" : "",
+        "image" : "rsc/Stratagem_Icons/seismic_probe.png"
+    },
+    {
+        "name" : "Resupply",
+        "category" : "Mission",
+        "command" : "DDUR",
+        "image" : "rsc/Stratagem_Icons/resupply.png"
+    },
+    {
+        "name" : "Reinforce",
+        "category" : "Mission",
+        "command" : "UDRLU",
+        "image" : "rsc/Stratagem_Icons/reinforce.png"
+    },
+    {
+        "name" : "Hellbomb",
+        "category" : "Mission",
+        "command" : "DULDURDU",
+        "image" : "rsc/Stratagem_Icons/hellbomb.png"
+    },
+    {
+        "name" : "Eagle Rearm",
+        "category" : "Mission",
+        "command" : "UULUR",
+        "image" : "rsc/Stratagem_Icons/eagle_rearm.png"
+    },
+    {
+        "name" : "Upload Data",
+        "category" : "Mission",
+        "command" : "LRUUU",
+        "image" : "rsc/Stratagem_Icons/upload_data.png"
+    },
+    {
+        "name" : "SSSD Delivery",
+        "category" : "Mission",
+        "command" : "",
+        "image" : "rsc/Stratagem_Icons/upload_data.png"
+    },
+    {
+        "name" : "Orbital Illumination Flare",
+        "category" : "Mission",
+        "command" : "",
+        "image" : "rsc/Stratagem_Icons/orbital_illumination_flare.png"
+    },
+    {
+        "name" : "SEAF Artillery",
+        "category" : "Mission",
+        "command" : "RUUD",
+        "image" : "rsc/Stratagem_Icons/seaf_artillery.png"
+    },
+    {
+        "name" : "Prospecting Drill",
+        "category" : "Mission",
+        "command" : "DDLRDD",
+        "image" : "rsc/Stratagem_Icons/prospecting_drill.png"
+    },
+    {
+        "name" : "Super Earth Flag",
+        "category" : "Mission",
+        "command" : "DUDU",
+        "image" : "rsc/Stratagem_Icons/super_earth_flag.png"
+    },
+
+
+
+    {
+        "name" : "\"Guard Dog\" Rover",
+        "category" : "Backpacks",
+        "command" : "DULURR",
+        "image" : "rsc/Stratagem_Icons/guard_dog_rover.png"
+    },
+    {
+        "name" : "\"Guard Dog\"",
+        "category" : "Backpacks",
+        "command" : "DULURD",
+        "image" : "rsc/Stratagem_Icons/guard_dog.png"
+    },
+    {
+        "name" : "Jump Pack",
+        "category" : "Backpacks",
+        "command" : "DUUDU",
+        "image" : "rsc/Stratagem_Icons/jump_pack.png"
+    },
+    {
+        "name" : "Supply Pack",
+        "category" : "Backpacks",
+        "command" : "DLDUUD",
+        "image" : "rsc/Stratagem_Icons/supply_pack.png"
+    },
+    {
+        "name" : "Shield Generator Pack",
+        "category" : "Backpacks",
+        "command" : "DULRLR",
+        "image" : "rsc/Stratagem_Icons/shield_generator_pack.png"
+    },
+    {
+        "name" : "Ballistic Shield Backpack",
+        "category" : "Backpacks",
+        "command" : "DLDDUL",
+        "image" : "rsc/Stratagem_Icons/ballistic_shield_backpack.png"
+    },
+
+
+
+    {
+        "name" : "Autocannon",
+        "category" : "SupportWeapons",
+        "command" : "DLDUUR",
+        "image" : "rsc/Stratagem_Icons/autocannon.png"
+    },
+    {
+        "name" : "Expendable Anti-tank",
+        "category" : "SupportWeapons",
+        "command" : "DDLUR",
+        "image" : "rsc/Stratagem_Icons/expendable_anti_tank.png"
+    },
+    {
+        "name" : "Flamethrower",
+        "category" : "SupportWeapons",
+        "command" : "DLUDU",
+        "image" : "rsc/Stratagem_Icons/flamethrower.png"
+    },
+    {
+        "name" : "Laser Cannon",
+        "category" : "SupportWeapons",
+        "command" : "RDURD",
+        "image" : "rsc/Stratagem_Icons/laser_cannon.png"
+    },
+    {
+        "name" : "Stalwart",
+        "category" : "SupportWeapons",
+        "command" : "DLDUUL",
+        "image" : "rsc/Stratagem_Icons/stalwart.png"
+    },
+    {
+        "name" : "Machine Gun",
+        "category" : "SupportWeapons",
+        "command" : "DLDUR",
+        "image" : "rsc/Stratagem_Icons/machine_gun.png"
+    },
+    {
+        "name" : "Arc Thrower",
+        "category" : "SupportWeapons",
+        "command" : "DRDULL",
+        "image" : "rsc/Stratagem_Icons/arc_thrower.png"
+    },
+    {
+        "name" : "Grenade Launcher",
+        "category" : "SupportWeapons",
+        "command" : "DLULD",
+        "image" : "rsc/Stratagem_Icons/grenade_launcher.png"
+    },
+    {
+        "name" : "Anti-Materiel Rifle",
+        "category" : "SupportWeapons",
+        "command" : "DLRUD",
+        "image" : "rsc/Stratagem_Icons/anti_materiel_rifle.png"
+    },
+    {
+        "name" : "Railgun",
+        "category" : "SupportWeapons",
+        "command" : "DRDULR",
+        "image" : "rsc/Stratagem_Icons/railgun.png"
+    },
+    {
+        "name" : "Recoilless Rifle",
+        "category" : "SupportWeapons",
+        "command" : "DLRRL",
+        "image" : "rsc/Stratagem_Icons/recoilless_rifle.png"
+    },
+    {
+        "name" : "SPEAR Launcher",
+        "category" : "SupportWeapons",
+        "command" : "DDUDD",
+        "image" : "rsc/Stratagem_Icons/spear.png"
+    },
+
+
+
+    {
+        "name" : "Patriot Exosuit",
+        "category" : "Vehicles",
+        "command" : "LDRULDD",
+        "image" : "rsc/Stratagem_Icons/patriot_exosuit.png"
+    },
+
+
+
+    {
+        "name" : "Tesla Tower",
+        "category" : "Defensive",
+        "command" : "DURULR",
+        "image" : "rsc/Stratagem_Icons/tesla_tower.png"
+    },
+    {
+        "name" : "Mortar Sentry",
+        "category" : "Defensive",
+        "command" : "DURRD",
+        "image" : "rsc/Stratagem_Icons/mortar_sentry.png"
+    },
+    {
+        "name" : "EMS Mortar Sentry",
+        "category" : "Defensive",
+        "command" : "DURDR",
+        "image" : "rsc/Stratagem_Icons/ems_mortar_sentry.png"
+    },
+    {
+        "name" : "Machine Gun Sentry",
+        "category" : "Defensive",
+        "command" : "DURRU",
+        "image" : "rsc/Stratagem_Icons/machine_gun_sentry.png"
+    },
+    {
+        "name" : "Gatling Sentry",
+        "category" : "Defensive",
+        "command" : "DURL",
+        "image" : "rsc/Stratagem_Icons/gatling_sentry.png"
+    },
+    {
+        "name" : "Anti-Personnel Minefield",
+        "category" : "Defensive",
+        "command" : "DLUR",
+        "image" : "rsc/Stratagem_Icons/anti_personnel_minefield.png"
+    },
+    {
+        "name" : "Incendiary Mines",
+        "category" : "Defensive",
+        "command" : "DLLD",
+        "image" : "rsc/Stratagem_Icons/incendiary_mines.png"
+    },
+    {
+        "name" : "Shield Generator Relay",
+        "category" : "Defensive",
+        "command" : "DULRLR",
+        "image" : "rsc/Stratagem_Icons/shield_generator_relay.png"
+    },
+    {
+        "name" : "HMG Emplacement",
+        "category" : "Defensive",
+        "command" : "DULRRL",
+        "image" : "rsc/Stratagem_Icons/hmg_emplacement.png"
+    },
+    {
+        "name" : "Autocannon Sentry",
+        "category" : "Defensive",
+        "command" : "DURULU",
+        "image" : "rsc/Stratagem_Icons/autocannon_sentry.png"
+    },
+    {
+        "name" : "Rocket Sentry",
+        "category" : "Defensive",
+        "command" : "DURRL",
+        "image" : "rsc/Stratagem_Icons/rocket_sentry.png"
+    },
+
+
+
+    {
+        "name" : "Orbital Precision Strike",
+        "category" : "Orbital",
+        "command" : "RRU",
+        "image" : "rsc/Stratagem_Icons/orbital_precision_strike.png"
+    },
+    {
+        "name" : "Orbital Airbust Strike",
+        "category" : "Orbital",
+        "command" : "RRR",
+        "image" : "rsc/Stratagem_Icons/orbital_airburst_strike.png"
+    },
+    {
+        "name" : "Orbital 120MM HE Barrage",
+        "category" : "Orbital",
+        "command" : "RRDLRD",
+        "image" : "rsc/Stratagem_Icons/orbital_120mm_he_barrage.png"
+    },
+    {
+        "name" : "Orbital 380MM HE Barrage",
+        "category" : "Orbital",
+        "command" : "RDUULDD",
+        "image" : "rsc/Stratagem_Icons/orbital_380mm_he_barrage.png"
+    },
+    {
+        "name" : "Orbital Walking Barrage",
+        "category" : "Orbital",
+        "command" : "RDRDRD",
+        "image" : "rsc/Stratagem_Icons/orbital_walking_barrage.png"
+    },
+    {
+        "name" : "Orbital Laser",
+        "category" : "Orbital",
+        "command" : "RDURD",
+        "image" : "rsc/Stratagem_Icons/orbital_laser.png"
+    },
+    {
+        "name" : "Orbital Railcannon Strike",
+        "category" : "Orbital",
+        "command" : "RUDDR",
+        "image" : "rsc/Stratagem_Icons/orbital_railcannon_strike.png"
+    },
+    {
+        "name" : "Orbital Gatling Barrage",
+        "category" : "Orbital",
+        "command" : "RDLUU",
+        "image" : "rsc/Stratagem_Icons/orbital_gatling_barrage.png"
+    },
+    {
+        "name" : "Orbital Gas Strike",
+        "category" : "Orbital",
+        "command" : "RRDR",
+        "image" : "rsc/Stratagem_Icons/orbital_gas_strike.png"
+    },
+    {
+        "name" : "Orbital EMS Strike",
+        "category" : "Orbital",
+        "command" : "RRLD",
+        "image" : "rsc/Stratagem_Icons/orbital_ems_strike.png"
+    },
+    {
+        "name" : "Orbital Smoke Strike",
+        "category" : "Orbital",
+        "command" : "RRDU",
+        "image" : "rsc/Stratagem_Icons/orbital_smoke_strike.png"
+    },
+
+
+
+    {
+        "name" : "Eagle Strafing Run",
+        "category" : "Eagle",
+        "command" : "URR",
+        "image" : "rsc/Stratagem_Icons/eagle_strafing_run.png"
+    },
+    {
+        "name" : "Eagle Airstrike",
+        "category" : "Eagle",
+        "command" : "URDR",
+        "image" : "rsc/Stratagem_Icons/eagle_airstrike.png"
+    },
+    {
+        "name" : "Eagle Cluster Bomb",
+        "category" : "Eagle",
+        "command" : "URDDR",
+        "image" : "rsc/Stratagem_Icons/eagle_cluster_bomb.png"
+    },
+    {
+        "name" : "Eagle Napalm Strike",
+        "category" : "Eagle",
+        "command" : "URDU",
+        "image" : "rsc/Stratagem_Icons/eagle_napalm_airstrike.png"
+    },
+    {
+        "name" : "Eagle Smoke Strike",
+        "category" : "Eagle",
+        "command" : "URUD",
+        "image" : "rsc/Stratagem_Icons/eagle_smoke_strike.png"
+    },
+    {
+        "name" : "Eagle 110MM Rocket Pods",
+        "category" : "Eagle",
+        "command" : "URUL",
+        "image" : "rsc/Stratagem_Icons/eagle_110mm_rocket_pods.png"
+    },
+    {
+        "name" : "Eagle 500kg Bomb",
+        "category" : "Eagle",
+        "command" : "URDDD",
+        "image" : "rsc/Stratagem_Icons/eagle_500kg_bomb.png"
+    }
+]

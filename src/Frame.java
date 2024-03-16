@@ -24,13 +24,13 @@ public class Frame extends JFrame implements KeyListener {
 	private TextLabel lblGetReady = new TextLabel("GET READY", 24, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblRound = new TextLabel("Round", 10, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblRoundNum = new TextLabel("1", 16, JLabel.CENTER, Font.BOLD);
-//	
-//	//	Play Menu
-//	private JPanel pnlPlayMain = new JPanel();
-//	private TextLabel lblRound2 = new TextLabel("Round", 8, JLabel.CENTER, Font.BOLD);
-//	private TextLabel lblRoundNum2 = new TextLabel("1", 12, JLabel.CENTER, Font.BOLD);
-//	private TextLabel lblScore = new TextLabel("SCORE", 5, JLabel.CENTER, Font.BOLD);
-//	private TextLabel lblScoreNum = new TextLabel("0", 5, JLabel.CENTER, Font.BOLD);
+	
+	//	Play Menu
+	private TextLabel lblRound2 = new TextLabel("Round", 10, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblRoundNum2 = new TextLabel("1", 16, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblScore = new TextLabel("SCORE", 10, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblScoreNum = new TextLabel("0", 16, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblStratagemName = new TextLabel("Stratagem", 10, JLabel.CENTER, Font.BOLD);
 	
 	//Settings
 	private static final String FONT_NAME = "dialog";
@@ -99,6 +99,33 @@ public class Frame extends JFrame implements KeyListener {
 		addMenu(panels, pnlGetReady, "GetReady");
 		
 		//	Play Screen
+		pnlPlay.changeLayout( new GridBagLayout() );
+		
+		//1st Row
+		pnlPlay.addComp( new TestPanel(Color.red), Main.getGbc(0, 0, 0.25, 0.5, 1, 3) );
+		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 0, 0.15, 0.1, 5, 1) );
+		
+		//2nd Row
+		Image img = new ImageIcon("rsc/StratagemIcon/anti_personnel_minefield.png").getImage();
+		for (int i=0; i<5; i++) {
+			ImagePanel imgPanel = new ImagePanel(img);
+			pnlPlay.addComp( imgPanel, Main.getGbc(1+i, 1, 0.15, 0.3) );
+		}
+		
+		//3rd Row
+		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 2, 0.15, 0.1, 5, 1) );
+		
+		//4th Row
+		lblStratagemName.setOpaque(true);
+		lblStratagemName.setBackground(Color.YELLOW);
+		pnlPlay.addComp( lblStratagemName, Main.getGbc(0, 3, 1.0, 0.15, 6, 1) );
+		
+		//5th Row
+		pnlPlay.addComp( new TestPanel(Color.white), Main.getGbc(0, 4, 1.0, 0.3, 6, 1) );
+		
+		//6th Row
+		pnlPlay.addComp( new TestPanel(Color.yellow), Main.getGbc(0, 5, 1.0, 0.05, 6, 1) );
+		
 		addMenu(panels, pnlPlay, "Play");
 		
 		add(panels);
@@ -107,6 +134,14 @@ public class Frame extends JFrame implements KeyListener {
 		setSize(1000, 500);
 		setLocationRelativeTo(null); //Move Frame to Middle
 	} //Constructor
+	
+	private class TestPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+		
+		public TestPanel(Color c) {
+			setBackground(c);
+		}
+	}
 	
 	
 	//Getters
@@ -171,6 +206,7 @@ public class Frame extends JFrame implements KeyListener {
 			lblGetReady.resize(sizeMul);
 			lblRound.resize(sizeMul);
 			lblRoundNum.resize(sizeMul);
+			lblStratagemName.resize(sizeMul);
 		}
 	}
 	

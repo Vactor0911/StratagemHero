@@ -162,14 +162,21 @@ class ImagePanel extends JPanel {
 	
 	public ImagePanel(Image image) {
 		this(image, null);
+		setOpaque(false);
+	}
+	
+	public void setImage(Image img) {
+		this.image = img;
 	}
 	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		
-		g.setColor(bgColor);
-		g.fillRect( 0, 0, getWidth(), getHeight() );
+		if (bgColor != null) {
+			g.setColor(bgColor);
+			g.fillRect( 0, 0, getWidth(), getHeight() );
+		}
 		
 		double scaleX = (double)this.getWidth() / (double)width;
 		double scaleY = (double)this.getHeight() / (double)height;
@@ -181,9 +188,6 @@ class ImagePanel extends JPanel {
 		int y = (int)(this.getHeight() * 0.5 - scaledHeight * 0.5);
 		
 		g.drawImage(image, x, y, scaledWidth, scaledHeight, this);
-		
-		g.setColor(Color.red);
-		g.fillRect(x, y, scaledWidth, scaledHeight);
 	} //paintComponent()
 } //ImagePanel Class
 
