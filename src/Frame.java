@@ -1,10 +1,22 @@
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Frame extends JFrame implements KeyListener {
 	private static final long serialVersionUID = 1L;
@@ -106,7 +118,7 @@ public class Frame extends JFrame implements KeyListener {
 		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 0, 0.15, 0.1, 5, 1) );
 		
 		//2nd Row
-		Image img = new ImageIcon("rsc/StratagemIcon/anti_personnel_minefield.png").getImage();
+		Image img = new ImageIcon("rsc/Stratagem_Icons/anti_personnel_minefield.png").getImage();
 		for (int i=0; i<5; i++) {
 			ImagePanel imgPanel = new ImagePanel(img);
 			pnlPlay.addComp( imgPanel, Main.getGbc(1+i, 1, 0.15, 0.3) );
@@ -135,6 +147,7 @@ public class Frame extends JFrame implements KeyListener {
 		setLocationRelativeTo(null); //Move Frame to Middle
 	} //Constructor
 	
+	// #TODO Remove TestPanel Class
 	private class TestPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
 		
@@ -218,11 +231,9 @@ public class Frame extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (strMenu) {
 			case "Main":
-				CardLayout layout = (CardLayout)panels.getLayout();
-				layout.next(panels);
-				//setMenu("GetReady");
-				//timer = new Timer();
-				//timer.schedule(ttReady, 3000);
+				setMenu("GetReady");
+				timer = new Timer();
+				timer.schedule(ttReady, 3000);
 				break;
 			case "Play":
 				break;

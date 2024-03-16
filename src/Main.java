@@ -27,5 +27,9 @@ public class Main {
 	public static GridBagConstraints getGbc(int x, int y, double weightX, double weightY) {
 		return getGbc(x, y, weightX, weightY, 1, 1);
 	}
+	
+	public static String getPath(String path) {
+		return Main.class.getResource(path).getPath();
+	}
 
 }

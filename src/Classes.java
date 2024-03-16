@@ -1,10 +1,30 @@
-import java.awt.*;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
-import java.awt.image.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.LayoutManager;
+import java.awt.Toolkit;
+import java.awt.image.FilteredImageSource;
+import java.awt.image.ImageProducer;
+import java.awt.image.RGBImageFilter;
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
-import javax.swing.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 
 class ColorizeFilter extends RGBImageFilter implements Serializable {
@@ -36,7 +56,8 @@ class ColorizeFilter extends RGBImageFilter implements Serializable {
 
 class BackPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private final Image imgSuperEarth = new ImageIcon("rsc/SuperEarthEmblem.png").getImage();
+	//private final Image imgSuperEarth = new ImageIcon( Main.class.getResource("rsc/SuperEarthEmblem.png") ).getImage();
+	private final Image imgSuperEarth = new ImageIcon( Main.getPath("rsc/SuperEarthEmblem.png") ).getImage();
 	private final Image coloredImage;
 	private final int WIDTH;
 	private final int HEIGHT;
@@ -221,3 +242,85 @@ class TextLabel extends JLabel {
 		setFont(font);
 	}
 } //TextLabel Class
+
+
+class Stratagem {
+	private HashMap<String, JSONObject> dictStratagem = new HashMap<>();
+	private HashMap<String, String[]> dictCategory = new HashMap<>();
+	
+	public Stratagem() {
+		String jsonPath = Main.getPath("rsc/Stratagems.json");
+        File file = new File(jsonPath);
+        
+        try {
+            String content = new String( Files.readAllBytes( Paths.get( file.toURI() ) ) );
+            JSONArray aryJson = new JSONArray(content);
+            
+            //Read all JSON data
+            HashMap<String, ArrayList<String>> dict = new HashMap<>();
+            for (Object k :aryJson) {
+            	JSONObject obj = (JSONObject)k;
+            	
+            	//Exclude invalid data
+            	if (obj.getString("command") == "" || obj.getString("image") == "") {
+            		continue;
+            	}
+            	
+            	dictStratagem.put(obj.getString("name"), obj);
+            	
+            	ArrayList<String> list = dict.get( obj.getString("category") );
+            	if (list == null) {
+            		list = new ArrayList<>();
+            	}
+            	list.add( obj.getString("name") );
+            	dict.put(obj.getString("category"), list);
+            }
+            
+            //Initialize dictionary
+            for ( String k : dict.keySet() ) {
+            	String[] array = dict.get(k).toArray(new String[0]);
+            	dictCategory.put(k, array);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+		
+	} //Constructor
+	
+	public JSONObject[] getRandStratagem(int count, String[] filter) {
+		JSONObject[] aryObject = new JSONObject[count];
+		
+		ArrayList<String> list = new ArrayList<>();
+		
+		//Set Filter
+		String[] fixedFilter = filter;
+		if (fixedFilter == null) {
+			fixedFilter = dictCategory.keySet().toArray(new String[0]);
+		}
+		
+		//Init stratagem array by filter
+		for (String k : fixedFilter) {
+			String[] array = dictCategory.get(k);
+			if (array == null) {
+				continue;
+			}
+			for (String l : array)
+			list.add(l);
+		}
+		Collections.shuffle(list); //Shuffle stratagem list
+		
+		//Put random stratagems
+		for (int i=0; i<count; i++) {
+			int randInt = (int)( Math.random() * list.size() );
+			String name = list.get(randInt);
+			aryObject[i] = dictStratagem.get(name);
+		}
+		
+		return aryObject;
+	} //getRandStratagem()
+	
+	public JSONObject[] getRandStratagem(int count) {
+		return getRandStratagem(count, null);
+	} //getRandStratagem()
+} //Stratagem Class
