@@ -11,33 +11,42 @@ public class Frame extends JFrame implements KeyListener {
 	
 	//Components
 	private JPanel panels = new JPanel( new CardLayout() );
-	private MyPanel pnlNone = new MyPanel();
-	private MyPanel pnlMain = new MyPanel();
-	private MyPanel pnlGetReady = new MyPanel();
-	private MyPanel pnlPlay = new MyPanel();
+	private BackPanel pnlNone = new BackPanel();
+	private BackPanel pnlMain = new BackPanel();
+	private BackPanel pnlGetReady = new BackPanel();
+	private BackPanel pnlPlay = new BackPanel();
 	
 	//	Main Menu
-	private TextLabel lblTitle = new TextLabel("STRATAGEM HERO", JLabel.CENTER, Font.BOLD, 0.065);
-	private TextLabel lblSubtitle = new TextLabel("Enter any Stratagem Input to Start!", JLabel.CENTER, Font.BOLD, 0.03);
+	private TextLabel lblTitle = new TextLabel("STRATAGEM HERO", 24, JLabel.CENTER, Font.BOLD);;
+	private TextLabel lblSubtitle = new TextLabel("Enter any Stratagem Input to Start!", 12, JLabel.CENTER, Font.BOLD);
 	
 	//	Get Ready Menu
-	private TextLabel lblGetReady = new TextLabel("GET READY", JLabel.CENTER, Font.BOLD, 0.065);
-	private TextLabel lblRound = new TextLabel("Round", JLabel.CENTER, Font.BOLD, 0.025);
-	private TextLabel lblRoundNum = new TextLabel("1", JLabel.CENTER, Font.BOLD, 0.05);
+	private TextLabel lblGetReady = new TextLabel("GET READY", 24, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblRound = new TextLabel("Round", 10, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblRoundNum = new TextLabel("1", 16, JLabel.CENTER, Font.BOLD);
+//	
+//	//	Play Menu
+//	private JPanel pnlPlayMain = new JPanel();
+//	private TextLabel lblRound2 = new TextLabel("Round", 8, JLabel.CENTER, Font.BOLD);
+//	private TextLabel lblRoundNum2 = new TextLabel("1", 12, JLabel.CENTER, Font.BOLD);
+//	private TextLabel lblScore = new TextLabel("SCORE", 5, JLabel.CENTER, Font.BOLD);
+//	private TextLabel lblScoreNum = new TextLabel("0", 5, JLabel.CENTER, Font.BOLD);
 	
 	//Settings
 	private static final String FONT_NAME = "dialog";
 	
 	//Variables
+	private double sizeMul = 1.0d;
 	private HashMap<String, JPanel> dictMenu = new HashMap<>();
 	private String strMenu = "Main";
 	private int round = 1;
 	private Timer timer;
-	private TimerTask ttDelay = new TimerTask() {
+	private TimerTask ttReady = new TimerTask() {
 		@Override
 		public void run() {
-			setMenu("Play");
 			timer.cancel();
+			System.out.println("Delay!");
+			setMenu("Play");
 		}
 	};
 	private TimerTask ttInterval = new TimerTask() {
@@ -49,14 +58,13 @@ public class Frame extends JFrame implements KeyListener {
 
 	public Frame() {
 		setTitle("Stratagem Hero");
-		setSize(1000, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		setLocationRelativeTo(null); //Move Frame to Middle
 		
 		//Initialize
-		setMinimumSize( new Dimension(1000, 500) );
+		setMinimumSize( new Dimension(500, 250) );
 		addKeyListener(this);
+		addComponentListener( new FrameListener() );
 		timer = new Timer();
 		
 		//Draw Screen
@@ -64,46 +72,64 @@ public class Frame extends JFrame implements KeyListener {
 		panels.add(pnlNone, "None");
 		
 		//	Main Screen
-		pnlMain.setLayout( new GridLayout(5, 1) );
-		pnlMain.add( new JLabel() );
-		pnlMain.add( new JLabel() );
+		pnlMain.changeLayout( new GridBagLayout() );
+		pnlMain.addComp( new JLabel(), Main.getGbc(0, 0, 1, 0.2) );
+		
 		lblTitle.setForeground(Color.WHITE);
-		pnlMain.add(lblTitle);
+		pnlMain.addComp( lblTitle, Main.getGbc(0, 1, 1, 0.6) );
+		
 		lblSubtitle.setForeground(Color.YELLOW);
-		pnlMain.add(lblSubtitle);
-		pnlMain.add( new JLabel() );
+		pnlMain.addComp( lblSubtitle, Main.getGbc(0, 2, 1, 0.2) );
 		
 		addMenu(panels, pnlMain, "Main");
 		
 		//	Get Ready Screen
-		pnlGetReady.setLayout( new GridLayout(5, 1) );
-		pnlGetReady.add( new JLabel() );
-		pnlGetReady.add( new JLabel() );
+		pnlGetReady.changeLayout( new GridBagLayout() );
+		pnlGetReady.addComp( new JLabel(), Main.getGbc(0, 0, 1, 0.24) );
+		
 		lblGetReady.setForeground(Color.WHITE);
-		pnlGetReady.add(lblGetReady);
+		pnlGetReady.addComp( lblGetReady, Main.getGbc(0, 1, 1, 0.52) );
 		
-		JPanel pnl2 = new JPanel();
-		pnl2.setLayout( new GridLayout(2, 1) );
-		pnl2.setOpaque(false);
 		lblRound.setForeground(Color.WHITE);
-		pnl2.add(lblRound);
-		lblRoundNum.setForeground(Color.YELLOW);
-		pnl2.add(lblRoundNum);
-		pnlGetReady.add(pnl2);
+		pnlGetReady.addComp( lblRound, Main.getGbc(0, 2, 1, 0.09) );
 		
-		pnlGetReady.add( new JLabel() );
+		lblRoundNum.setForeground(Color.YELLOW);
+		pnlGetReady.addComp( lblRoundNum, Main.getGbc(0, 3, 1, 0.15) );
 		
 		addMenu(panels, pnlGetReady, "GetReady");
 		
 		//	Play Screen
+		addMenu(panels, pnlPlay, "Play");
 		
 		add(panels);
 		setMenu("Main");
 		
-		//Resize
-		setSize(1001, 500);
 		setSize(1000, 500);
+		setLocationRelativeTo(null); //Move Frame to Middle
 	} //Constructor
+	
+	
+	//Getters
+	public double getSizeMul() {
+		return sizeMul;
+	}
+	
+	
+	private GridBagConstraints getGbc(int x, int y, int width, int height, double weightX, double weightY) {
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.weightx = weightX;
+		gbc.weighty = weightY;
+		gbc.gridx = x;
+		gbc.gridy = y;
+		gbc.gridwidth = width;
+		gbc.gridheight = height;
+		return gbc;
+	}
+	
+	private GridBagConstraints getGbc(int x, int y, int width, int height) {
+		return getGbc(x, y, width, height, 1.0, 1.0);
+	}
 	
 	private void addMenu(JPanel parentPnl, JPanel childPnl, String name) {
 		parentPnl.add(childPnl, name);
@@ -111,14 +137,43 @@ public class Frame extends JFrame implements KeyListener {
 	}
 	
 	private void setMenu(String menu) {
+		strMenu = menu;
 		CardLayout layout = (CardLayout)panels.getLayout();
 		if (dictMenu.get(menu) == null) {
 			layout.show(panels, "None");
 			return;
 		}
 		layout.show(panels, menu);
-	}
 		
+		switch (menu) {
+			case "Ready":
+				//lblRoundNum.setText( Integer.toString(round) );
+				break;
+			case "Play":
+				timer = new Timer();
+				timer.schedule(ttInterval, 0, 100);
+				break;
+		}
+	}
+	
+	
+	//ComponentAdapter
+	private class FrameListener extends ComponentAdapter {
+		@Override
+		public void componentResized(ComponentEvent e) {
+			double widthMul = getWidth() * 0.002;
+			double heightMul = getHeight() * 0.004;
+			sizeMul = Math.min(widthMul, heightMul);
+			
+			//Components
+			lblTitle.resize(sizeMul);
+			lblSubtitle.resize(sizeMul);
+			lblGetReady.resize(sizeMul);
+			lblRound.resize(sizeMul);
+			lblRoundNum.resize(sizeMul);
+		}
+	}
+	
 	//KeyListener
 	@Override
 	public void keyTyped(KeyEvent e) { }
@@ -127,13 +182,15 @@ public class Frame extends JFrame implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		switch (strMenu) {
 			case "Main":
-				strMenu = "GetReady";
-				timer.schedule(ttDelay, 3000, 3000);
+				CardLayout layout = (CardLayout)panels.getLayout();
+				layout.next(panels);
+				//setMenu("GetReady");
+				//timer = new Timer();
+				//timer.schedule(ttReady, 3000);
 				break;
 			case "Play":
 				break;
 		}
-		setMenu(strMenu);
 	} //keyPressed()
 
 	@Override
