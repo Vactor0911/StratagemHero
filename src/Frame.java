@@ -68,7 +68,6 @@ public class Frame extends JFrame {
 	private int score = 0;
 	private JSONObject[] aryStratagem;
 	private int stratagemIndex = 0;
-	private String stratagemCommand = "";
 	private int commandIndex = 0;
 	private final double MAX_TIME = 12.0d;
 	private final double MAX_TIME_MUL = 1 / MAX_TIME;
@@ -289,7 +288,7 @@ public class Frame extends JFrame {
 		for (int i=1; i<6; i++) {
 			int fixedIndex = i + index;
 			//Out of index
-			if (fixedIndex > aryStratagem.length) { //Out of index
+			if (fixedIndex >= aryStratagem.length) { //Out of index
 				image = null;
 			}
 			else {
@@ -300,6 +299,7 @@ public class Frame extends JFrame {
 	}
 	
 	private void resetStratagem() {
+		commandIndex = 0;
 		//Get stratagem queue
 		aryStratagem = stratagem.getRandStratagem(10); //#TODO Difficulty Setting
 		
@@ -308,12 +308,35 @@ public class Frame extends JFrame {
 	}
 	
 	private void nextStratagem() {
+		time += 1.0d;
+		score += aryStratagem[stratagemIndex].getString("command").length() * 5;
+		commandIndex = 0;
 		setStratagemIndex(stratagemIndex + 1);
+		//TODO Add Round Clear
 	}
 	
 	
 	//KeyAdapter
 	private class InputListener extends KeyAdapter {
+		HashMap<Integer, Character> dictKey = new HashMap<>() {{
+			put(KeyEvent.VK_W, 'U');
+			put(KeyEvent.VK_S, 'D');
+			put(KeyEvent.VK_A, 'L');
+			put(KeyEvent.VK_D, 'R');
+			put(KeyEvent.VK_UP, 'U');
+			put(KeyEvent.VK_DOWN, 'D');
+			put(KeyEvent.VK_LEFT, 'L');
+			put(KeyEvent.VK_RIGHT, 'R');
+			put(KeyEvent.VK_KP_UP, 'U');
+			put(KeyEvent.VK_KP_DOWN, 'D');
+			put(KeyEvent.VK_KP_LEFT, 'L');
+			put(KeyEvent.VK_KP_RIGHT, 'R');
+			put(KeyEvent.VK_NUMPAD8, 'U');
+			put(KeyEvent.VK_NUMPAD5, 'D');
+			put(KeyEvent.VK_NUMPAD4, 'L');
+			put(KeyEvent.VK_NUMPAD6, 'R');
+		}};
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			switch (strMenu) {
@@ -321,7 +344,24 @@ public class Frame extends JFrame {
 					setMenu("GetReady");
 					break;
 				case "Play":
-					//#TODO input command
+					if (dictKey.get( e.getKeyCode() ) == null) {
+						break;
+					}
+					String fullCommand = aryStratagem[stratagemIndex].getString("command");
+					char nextCommand = fullCommand.charAt(commandIndex);
+					if (dictKey.get( e.getKeyCode() ) == nextCommand) { //Correct Command
+						commandIndex++;
+						
+						if (commandIndex >= fullCommand.length() ) {
+							nextStratagem();
+							break;
+						}
+						pnlCommand.setIndex(commandIndex);
+					}
+					else { //Wrong Command
+						commandIndex = 0;
+						pnlCommand.setIndex(commandIndex);
+					}
 					break;
 			}
 		} //keyPressed()

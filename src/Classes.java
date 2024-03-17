@@ -360,7 +360,7 @@ class CommandPanel extends JPanel {
 }
 
 
-class Stratagem {
+class Stratagem { //TODO Find null commands
 	private HashMap<String, JSONObject> dictStratagem = new HashMap<>();
 	private HashMap<String, String[]> dictCategory = new HashMap<>();
 	
