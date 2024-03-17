@@ -7,18 +7,22 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class Frame extends JFrame implements KeyListener {
+import org.json.JSONObject;
+
+public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
 	//Components
@@ -27,6 +31,7 @@ public class Frame extends JFrame implements KeyListener {
 	private BackPanel pnlMain = new BackPanel();
 	private BackPanel pnlGetReady = new BackPanel();
 	private BackPanel pnlPlay = new BackPanel();
+	private BackPanel pnlGameOver = new BackPanel();
 	
 	//	Main Menu
 	private TextLabel lblTitle = new TextLabel("STRATAGEM HERO", 24, JLabel.CENTER, Font.BOLD);;
@@ -43,6 +48,14 @@ public class Frame extends JFrame implements KeyListener {
 	private TextLabel lblScore = new TextLabel("SCORE", 10, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblScoreNum = new TextLabel("0", 16, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblStratagemName = new TextLabel("Stratagem", 10, JLabel.CENTER, Font.BOLD);
+	private CommandPanel pnlCommand = new CommandPanel();
+	private ImagePanel[] aryPnlStratagem = new ImagePanel[6];
+	private ProgressBar progressBar = new ProgressBar(1.0d);
+	
+	//	Game Over Menu
+	private TextLabel lblGameOver = new TextLabel("GAME OVER", 24, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblFinalScore = new TextLabel("YOUR FINAL SCORE", 10, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblFinalScoreNum = new TextLabel("0", 16, JLabel.CENTER, Font.BOLD);
 	
 	//Settings
 	private static final String FONT_NAME = "dialog";
@@ -52,21 +65,16 @@ public class Frame extends JFrame implements KeyListener {
 	private HashMap<String, JPanel> dictMenu = new HashMap<>();
 	private String strMenu = "Main";
 	private int round = 1;
+	private int score = 0;
+	private JSONObject[] aryStratagem;
+	private int stratagemIndex = 0;
+	private String stratagemCommand = "";
+	private int commandIndex = 0;
+	private final double MAX_TIME = 12.0d;
+	private final double MAX_TIME_MUL = 1 / MAX_TIME;
+	private double time = 0.0d;
+	private Stratagem stratagem = new Stratagem();
 	private Timer timer;
-	private TimerTask ttReady = new TimerTask() {
-		@Override
-		public void run() {
-			timer.cancel();
-			System.out.println("Delay!");
-			setMenu("Play");
-		}
-	};
-	private TimerTask ttInterval = new TimerTask() {
-		@Override
-		public void run() {
-			System.out.println("Timer!");
-		}
-	};
 
 	public Frame() {
 		setTitle("Stratagem Hero");
@@ -75,9 +83,13 @@ public class Frame extends JFrame implements KeyListener {
 		
 		//Initialize
 		setMinimumSize( new Dimension(500, 250) );
-		addKeyListener(this);
+		addKeyListener( new InputListener() );
 		addComponentListener( new FrameListener() );
 		timer = new Timer();
+		for (int i=0; i<aryPnlStratagem.length; i++) {
+			aryPnlStratagem[i] = new ImagePanel();
+		}
+		aryPnlStratagem[0].setBorder( BorderFactory.createLineBorder(Color.YELLOW, 3) );
 		
 		//Draw Screen
 		//	None Screen
@@ -114,18 +126,16 @@ public class Frame extends JFrame implements KeyListener {
 		pnlPlay.changeLayout( new GridBagLayout() );
 		
 		//1st Row
-		pnlPlay.addComp( new TestPanel(Color.red), Main.getGbc(0, 0, 0.25, 0.5, 1, 3) );
-		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 0, 0.15, 0.1, 5, 1) );
+		pnlPlay.addComp( aryPnlStratagem[0], Main.getGbc(0, 0, 0.25, 0.5, 1, 3) );
+		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 0, 0.15, 0.125, 5, 1) );
 		
 		//2nd Row
-		Image img = new ImageIcon("rsc/Stratagem_Icons/anti_personnel_minefield.png").getImage();
-		for (int i=0; i<5; i++) {
-			ImagePanel imgPanel = new ImagePanel(img);
-			pnlPlay.addComp( imgPanel, Main.getGbc(1+i, 1, 0.15, 0.3) );
+		for (int i=1; i<6; i++) {
+			pnlPlay.addComp( aryPnlStratagem[i], Main.getGbc(i, 1, 0.15, 0.25) );
 		}
 		
 		//3rd Row
-		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 2, 0.15, 0.1, 5, 1) );
+		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 2, 0.15, 0.125, 5, 1) );
 		
 		//4th Row
 		lblStratagemName.setOpaque(true);
@@ -133,12 +143,30 @@ public class Frame extends JFrame implements KeyListener {
 		pnlPlay.addComp( lblStratagemName, Main.getGbc(0, 3, 1.0, 0.15, 6, 1) );
 		
 		//5th Row
-		pnlPlay.addComp( new TestPanel(Color.white), Main.getGbc(0, 4, 1.0, 0.3, 6, 1) );
+		pnlPlay.addComp( pnlCommand, Main.getGbc(0, 4, 1.0, 0.2, 6, 1) );
 		
 		//6th Row
-		pnlPlay.addComp( new TestPanel(Color.yellow), Main.getGbc(0, 5, 1.0, 0.05, 6, 1) );
+		pnlPlay.addComp( new JLabel(), Main.getGbc(0, 5, 1.0, 0.1, 6, 1) );
+		
+		//7th Row
+		pnlPlay.addComp( progressBar, Main.getGbc(0, 6, 1.0, 0.05, 6, 1) );
 		
 		addMenu(panels, pnlPlay, "Play");
+		
+		//	Game Over Screen
+		pnlGameOver.changeLayout( new GridBagLayout() );
+		pnlGameOver.addComp( new JLabel(), Main.getGbc(0, 0, 1, 0.24) );
+		
+		lblGameOver.setForeground(Color.WHITE);
+		pnlGameOver.addComp( lblGameOver, Main.getGbc(0, 1, 1, 0.52) );
+		
+		lblFinalScore.setForeground(Color.WHITE);
+		pnlGameOver.addComp( lblFinalScore, Main.getGbc(0, 2, 1, 0.09) );
+		
+		lblFinalScoreNum.setForeground(Color.YELLOW);
+		pnlGameOver.addComp( lblFinalScoreNum, Main.getGbc(0, 3, 1, 0.15) );
+		
+		addMenu(panels, pnlGameOver, "GameOver");
 		
 		add(panels);
 		setMenu("Main");
@@ -146,15 +174,6 @@ public class Frame extends JFrame implements KeyListener {
 		setSize(1000, 500);
 		setLocationRelativeTo(null); //Move Frame to Middle
 	} //Constructor
-	
-	// #TODO Remove TestPanel Class
-	private class TestPanel extends JPanel {
-		private static final long serialVersionUID = 1L;
-		
-		public TestPanel(Color c) {
-			setBackground(c);
-		}
-	}
 	
 	
 	//Getters
@@ -194,16 +213,120 @@ public class Frame extends JFrame implements KeyListener {
 		layout.show(panels, menu);
 		
 		switch (menu) {
-			case "Ready":
-				//lblRoundNum.setText( Integer.toString(round) );
+			case "Main":
+				scheduleTimer(null, 0, 0);
+				round = 1;
+				score = 0;
+				break;
+			case "GetReady":
+				scheduleTimer("GetReady", 3000, 3000);
+				lblRoundNum.setText( Integer.toString(round) );
 				break;
 			case "Play":
-				timer = new Timer();
-				timer.schedule(ttInterval, 0, 100);
+				time = MAX_TIME; //reset time
+				scheduleTimer("Play", 0, 10);
+				resetStratagem();
 				break;
+			case "GameOver":
+				scheduleTimer("GameOver", 6000, 6000);
+		}
+	} //setMenu()
+	
+	private void scheduleTimer(String timerName, long delay, long period) {
+		timer.cancel();
+		timer.purge();
+		timer = new Timer();
+		
+		if (timerName == null || timerName == "") {
+			return;
+		}
+		
+		TimerTask timerTask;
+		switch (timerName) {
+			case "GetReady":
+				timerTask = new TimerTask() {
+					@Override
+					public void run() {
+						setMenu("Play");
+					}
+				};
+				break;
+			case "Play":
+				timerTask = new TimerTask() {
+					@Override
+					public void run() {
+						time -= 0.01d;
+						double progress = time * MAX_TIME_MUL;
+						progressBar.setProgress(progress);
+						
+						if (time <= 0) {
+							setMenu("GameOver");
+						}
+					}
+				};
+				break;
+			case "GameOver":
+				timerTask = new TimerTask() {
+					@Override
+					public void run() {
+						setMenu("Main");
+					}
+				};
+				break;
+			default:
+				return;
+		}
+		timer.scheduleAtFixedRate(timerTask, delay, period);
+	} //scheduleTimer()
+	
+	private void setStratagemIndex(int index) {
+		stratagemIndex = index;
+		Image image = new ImageIcon( Main.getPath( aryStratagem[index].getString("image") ) ).getImage();
+		aryPnlStratagem[0].setImage(image);
+		lblStratagemName.setText( aryStratagem[index].getString("name") ); //Set label text
+		pnlCommand.setCommand( aryStratagem[index].getString("command") ); //Set Command Arrow Image
+		
+		for (int i=1; i<6; i++) {
+			int fixedIndex = i + index;
+			//Out of index
+			if (fixedIndex > aryStratagem.length) { //Out of index
+				image = null;
+			}
+			else {
+				image = new ImageIcon( Main.getPath( aryStratagem[fixedIndex].getString("image") ) ).getImage();
+			}
+			aryPnlStratagem[i].setImage(image);
 		}
 	}
 	
+	private void resetStratagem() {
+		//Get stratagem queue
+		aryStratagem = stratagem.getRandStratagem(10); //#TODO Difficulty Setting
+		
+		//reset index & draw queue
+		setStratagemIndex(0);
+	}
+	
+	private void nextStratagem() {
+		setStratagemIndex(stratagemIndex + 1);
+	}
+	
+	
+	//KeyAdapter
+	private class InputListener extends KeyAdapter {
+		@Override
+		public void keyPressed(KeyEvent e) {
+			switch (strMenu) {
+				case "Main":
+					setMenu("GetReady");
+					break;
+				case "Play":
+					//#TODO input command
+					break;
+			}
+		} //keyPressed()
+	}
+		
 	
 	//ComponentAdapter
 	private class FrameListener extends ComponentAdapter {
@@ -212,35 +335,7 @@ public class Frame extends JFrame implements KeyListener {
 			double widthMul = getWidth() * 0.002;
 			double heightMul = getHeight() * 0.004;
 			sizeMul = Math.min(widthMul, heightMul);
-			
-			//Components
-			lblTitle.resize(sizeMul);
-			lblSubtitle.resize(sizeMul);
-			lblGetReady.resize(sizeMul);
-			lblRound.resize(sizeMul);
-			lblRoundNum.resize(sizeMul);
-			lblStratagemName.resize(sizeMul);
 		}
 	}
-	
-	//KeyListener
-	@Override
-	public void keyTyped(KeyEvent e) { }
-
-	@Override
-	public void keyPressed(KeyEvent e) {
-		switch (strMenu) {
-			case "Main":
-				setMenu("GetReady");
-				timer = new Timer();
-				timer.schedule(ttReady, 3000);
-				break;
-			case "Play":
-				break;
-		}
-	} //keyPressed()
-
-	@Override
-	public void keyReleased(KeyEvent e) { }
 	
 } //Frame Class

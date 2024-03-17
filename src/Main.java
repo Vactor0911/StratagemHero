@@ -1,4 +1,5 @@
 import java.awt.GridBagConstraints;
+import java.net.URL;
 
 public class Main {
 	private static Frame frame;
@@ -28,8 +29,8 @@ public class Main {
 		return getGbc(x, y, weightX, weightY, 1, 1);
 	}
 	
-	public static String getPath(String path) {
-		return Main.class.getResource(path).getPath();
+	public static URL getPath(String path) {
+		return Main.class.getResource(path);
 	}
 
 }

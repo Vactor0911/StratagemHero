@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -56,7 +57,6 @@ class ColorizeFilter extends RGBImageFilter implements Serializable {
 
 class BackPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
-	//private final Image imgSuperEarth = new ImageIcon( Main.class.getResource("rsc/SuperEarthEmblem.png") ).getImage();
 	private final Image imgSuperEarth = new ImageIcon( Main.getPath("rsc/SuperEarthEmblem.png") ).getImage();
 	private final Image coloredImage;
 	private final int WIDTH;
@@ -87,11 +87,6 @@ class BackPanel extends JPanel {
 		
 		setLayout( new GridBagLayout() );
 		pnlTemp.setLayout( new GridBagLayout() );
-		
-		pnlNorth.setBackground(Color.red);
-		pnlSouth.setBackground(Color.blue);
-		pnlWest.setBackground(Color.yellow);
-		pnlEast.setBackground(Color.green);
 		
         pnlNorth.setOpaque(false);
         pnlSouth.setOpaque(false);
@@ -172,9 +167,14 @@ class ImagePanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private Image image;
 	private Color bgColor;
-	int width, height;
+	private int width = 0;
+	private int height = 0;
 	
 	public ImagePanel(Image image, Color bgColor) {
+		if (image == null) {
+			return;
+		}
+		
 		this.image = image;
 		this.bgColor = bgColor;
 		width = image.getWidth(null);
@@ -186,8 +186,24 @@ class ImagePanel extends JPanel {
 		setOpaque(false);
 	}
 	
+	public ImagePanel() {
+		this(null, null);
+		setOpaque(false);
+	}
+	
+	
 	public void setImage(Image img) {
 		this.image = img;
+		
+		if (img == null) {
+			width = 0;
+			height = 0;
+		}
+		else {
+			width = image.getWidth(null);
+			height = image.getHeight(null);
+		}
+		repaint();
 	}
 	
 	@Override
@@ -232,7 +248,11 @@ class TextLabel extends JLabel {
 		setMaximumSize(dim);
 	}
 	
-	public void resize(double sizeMul) {
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		double sizeMul = Main.getFrame().getSizeMul();
 		if (Double.isNaN(sizeMul) || sizeMul <= 0) {
 			return;
 		}
@@ -244,12 +264,108 @@ class TextLabel extends JLabel {
 } //TextLabel Class
 
 
+class ProgressBar extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private double progress = 0.0d;
+	
+	public ProgressBar(double progress) {
+		this.progress = progress;
+		setBackground(Color.LIGHT_GRAY);
+		repaint();
+	}
+	
+	public ProgressBar() {
+		this(1.0d);
+	}
+	
+	public void setProgress(double progress) {		
+		this.progress = Math.max(progress, 0.0);
+		repaint();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		g.setColor(Color.YELLOW);
+		int width = (int)Math.round( (double)getWidth() * progress );
+		g.fillRect( 0, 0, width, getHeight() );
+	}
+} //ProgressBar Class
+
+
+class CommandPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+	private final Image imgUp = new ImageIcon( Main.getPath("rsc/Arrows/arrow_up.png") ).getImage();
+	private final Image imgDown = new ImageIcon( Main.getPath("rsc/Arrows/arrow_down.png") ).getImage();
+	private final Image imgLeft = new ImageIcon( Main.getPath("rsc/Arrows/arrow_left.png") ).getImage();
+	private final Image imgRight = new ImageIcon( Main.getPath("rsc/Arrows/arrow_right.png") ).getImage();
+	private final HashMap<Character, Image[]> dictArrow = new HashMap<>();
+	private final int width = imgUp.getWidth(null);
+	private final int height = imgUp.getHeight(null);
+	private String command = "";
+	private int index = 0;
+	
+	public CommandPanel() {
+		setOpaque(false);
+		setLayout( new GridBagLayout() );
+		
+		//Get Colored Image (White & Yellow)
+		char[] aryKey = {'U', 'D', 'L', 'R'};
+		Image[] aryImage = {imgUp, imgDown, imgLeft, imgRight};
+		for (int i=0; i<aryKey.length; i++) {
+			Image image = aryImage[i];
+			Image imageWhite = ColorizeFilter.colorizeImg(image, Color.WHITE);
+			Image imageYellow = ColorizeFilter.colorizeImg(image, Color.YELLOW);
+			Image[] aryColoredImage = {imageWhite, imageYellow};
+			dictArrow.put(aryKey[i], aryColoredImage);
+		}
+	}
+	
+	public void setCommand(String command) {
+		this.command = command;
+		setIndex(0);
+	}
+	
+	public void setIndex(int index) {
+		this.index = index;
+		repaint();
+	}
+	
+	@Override
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		
+		double scaleX = (double)this.getWidth() / (double)( width * command.length() );
+		double scaleY = (double)this.getHeight() / (double)height;
+		double scale = Math.min(scaleX, scaleY);
+		
+		int totalWidth = (int)Math.ceil(width * command.length() * scale);
+		int scaledWidth = (int)Math.ceil(width * scale);
+		int scaledHeight = (int)Math.ceil(height * scale);
+		int x = (int)(this.getWidth() * 0.5 - totalWidth * 0.5);
+		int y = (int)(this.getHeight() * 0.5 - scaledHeight * 0.5);
+		
+		for (int i=0; i<command.length(); i++) {
+			Image image;
+			if (i > index-1) {
+				image = dictArrow.get( command.charAt(i) )[0];
+			}
+			else {
+				image = dictArrow.get( command.charAt(i) )[1];
+			}
+			g.drawImage(image, x + scaledWidth * i, y, scaledWidth, scaledHeight, this);
+		}
+	}
+}
+
+
 class Stratagem {
 	private HashMap<String, JSONObject> dictStratagem = new HashMap<>();
 	private HashMap<String, String[]> dictCategory = new HashMap<>();
 	
 	public Stratagem() {
-		String jsonPath = Main.getPath("rsc/Stratagems.json");
+		String jsonPath = Main.getPath("rsc/Stratagems.json").getPath();
         File file = new File(jsonPath);
         
         try {
