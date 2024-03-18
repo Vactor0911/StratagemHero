@@ -2,14 +2,12 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,6 +22,7 @@ import org.json.JSONObject;
 
 public class Frame extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private final Image imageIcon = new ImageIcon( Main.getPath("rsc/SuperEarthLogo.png") ).getImage();
 	
 	//Components
 	private JPanel panels = new JPanel( new CardLayout() );
@@ -31,6 +30,7 @@ public class Frame extends JFrame {
 	private BackPanel pnlMain = new BackPanel();
 	private BackPanel pnlGetReady = new BackPanel();
 	private BackPanel pnlPlay = new BackPanel();
+	private BackPanel pnlRoundClear = new BackPanel();
 	private BackPanel pnlGameOver = new BackPanel();
 	
 	//	Main Menu
@@ -43,22 +43,29 @@ public class Frame extends JFrame {
 	private TextLabel lblRoundNum = new TextLabel("1", 16, JLabel.CENTER, Font.BOLD);
 	
 	//	Play Menu
-	private TextLabel lblRound2 = new TextLabel("Round", 10, JLabel.CENTER, Font.BOLD);
-	private TextLabel lblRoundNum2 = new TextLabel("1", 16, JLabel.CENTER, Font.BOLD);
-	private TextLabel lblScore = new TextLabel("SCORE", 10, JLabel.CENTER, Font.BOLD);
-	private TextLabel lblScoreNum = new TextLabel("0", 16, JLabel.CENTER, Font.BOLD);
-	private TextLabel lblStratagemName = new TextLabel("Stratagem", 10, JLabel.CENTER, Font.BOLD);
+	private TextLabel lblPlayRound = new TextLabel("Round", 10, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblPlayRoundNum = new TextLabel("1", 16, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblScore = new TextLabel("SCORE", 10, JLabel.RIGHT, Font.BOLD);
+	private TextLabel lblScoreNum = new TextLabel("0", 16, JLabel.RIGHT, Font.BOLD);
+	private TextLabel lblStratagemName = new TextLabel("", 10, JLabel.CENTER, Font.BOLD);
 	private CommandPanel pnlCommand = new CommandPanel();
 	private ImagePanel[] aryPnlStratagem = new ImagePanel[6];
 	private ProgressBar progressBar = new ProgressBar(1.0d);
+	
+	//Round Clear Menu
+	private TextLabel lblRoundBonus = new TextLabel("Round Bonus", 10, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblRoundBonusNum = new TextLabel("0", 16, JLabel.RIGHT, Font.BOLD);
+	private TextLabel lblTimeBonus = new TextLabel("Time Bonus", 10, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblTimeBonusNum = new TextLabel("0", 16, JLabel.RIGHT, Font.BOLD);
+	private TextLabel lblPerfectBonus = new TextLabel("Perfect Bonus", 10, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblPerfectBonusNum = new TextLabel("0", 16, JLabel.RIGHT, Font.BOLD);
+	private TextLabel lblTotalScore = new TextLabel("Total Score", 10, JLabel.LEFT, Font.BOLD);
+	private TextLabel lblTotalScoreNum = new TextLabel("0", 16, JLabel.RIGHT, Font.BOLD);
 	
 	//	Game Over Menu
 	private TextLabel lblGameOver = new TextLabel("GAME OVER", 24, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblFinalScore = new TextLabel("YOUR FINAL SCORE", 10, JLabel.CENTER, Font.BOLD);
 	private TextLabel lblFinalScoreNum = new TextLabel("0", 16, JLabel.CENTER, Font.BOLD);
-	
-	//Settings
-	private static final String FONT_NAME = "dialog";
 	
 	//Variables
 	private double sizeMul = 1.0d;
@@ -66,15 +73,17 @@ public class Frame extends JFrame {
 	private String strMenu = "Main";
 	private int round = 1;
 	private int score = 0;
-	private JSONObject[] aryStratagem;
-	private int stratagemIndex = 0;
-	private String stratagemCommand = "";
-	private int commandIndex = 0;
-	private final double MAX_TIME = 12.0d;
+	private final double MAX_TIME = 10.0d;
 	private final double MAX_TIME_MUL = 1 / MAX_TIME;
 	private double time = 0.0d;
-	private Stratagem stratagem = new Stratagem();
 	private Timer timer;
+	//	Stratagems
+	private Stratagem stratagem = new Stratagem();
+	private JSONObject[] aryStratagem;
+	private int stratagemIndex = 0;
+	private boolean flagStratagemPerfect = true;
+	private int stratagemPerfect = 0;
+	
 
 	public Frame() {
 		setTitle("Stratagem Hero");
@@ -82,6 +91,7 @@ public class Frame extends JFrame {
 		setVisible(true);
 		
 		//Initialize
+		setIconImage(imageIcon);
 		setMinimumSize( new Dimension(500, 250) );
 		addKeyListener( new InputListener() );
 		addComponentListener( new FrameListener() );
@@ -125,33 +135,71 @@ public class Frame extends JFrame {
 		//	Play Screen
 		pnlPlay.changeLayout( new GridBagLayout() );
 		
-		//1st Row
+		//		1st Row
 		pnlPlay.addComp( aryPnlStratagem[0], Main.getGbc(0, 0, 0.25, 0.5, 1, 3) );
 		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 0, 0.15, 0.125, 5, 1) );
-		
-		//2nd Row
+		//		2nd Row
 		for (int i=1; i<6; i++) {
 			pnlPlay.addComp( aryPnlStratagem[i], Main.getGbc(i, 1, 0.15, 0.25) );
 		}
-		
-		//3rd Row
+		//		3rd Row
 		pnlPlay.addComp( new JLabel(), Main.getGbc(1, 2, 0.15, 0.125, 5, 1) );
-		
-		//4th Row
+		//		4th Row
 		lblStratagemName.setOpaque(true);
 		lblStratagemName.setBackground(Color.YELLOW);
 		pnlPlay.addComp( lblStratagemName, Main.getGbc(0, 3, 1.0, 0.15, 6, 1) );
-		
-		//5th Row
+		//		5th Row
 		pnlPlay.addComp( pnlCommand, Main.getGbc(0, 4, 1.0, 0.2, 6, 1) );
-		
-		//6th Row
+		//		6th Row
 		pnlPlay.addComp( new JLabel(), Main.getGbc(0, 5, 1.0, 0.1, 6, 1) );
-		
-		//7th Row
+		//		7th Row
 		pnlPlay.addComp( progressBar, Main.getGbc(0, 6, 1.0, 0.05, 6, 1) );
+		//		West
+		JPanel pnlWest = pnlPlay.getPanel(BackPanel.WEST);
+		pnlWest.setLayout( new GridBagLayout() );
+		lblPlayRound.setForeground(Color.WHITE);
+		pnlWest.add( new JLabel(), Main.getGbc(0, 0, 1.0, 1.0, 1, 3) );
+		pnlWest.add( lblPlayRound, Main.getGbc(1, 0, 1.0, 0.09) );
+		lblPlayRoundNum.setForeground(Color.YELLOW);
+		pnlWest.add( lblPlayRoundNum, Main.getGbc(1, 1, 1.0, 0.21) );
+		pnlWest.add( new JLabel(), Main.getGbc(1, 2, 1.0, 0.7) );
+		//		East
+		JPanel pnlEast = pnlPlay.getPanel(BackPanel.EAST);
+		pnlEast.setLayout( new GridBagLayout() );
+		lblScoreNum.setForeground(Color.YELLOW);
+		pnlEast.add( lblScoreNum, Main.getGbc(0, 0, 1.0, 0.21) );
+		lblScore.setForeground(Color.WHITE);
+		pnlEast.add( lblScore, Main.getGbc(0, 1, 1.0, 0.09) );
+		pnlEast.add( new JLabel(), Main.getGbc(0, 2, 1.0, 0.7) );
+		pnlEast.add( new JLabel(), Main.getGbc(1, 0, 1.0, 1.0, 1, 3) );
 		
 		addMenu(panels, pnlPlay, "Play");
+		
+		//	Round Clear Screen
+		pnlRoundClear.changeLayout( new GridBagLayout() );
+		
+		//		1st Row
+		lblRoundBonus.setForeground(Color.WHITE);
+		pnlRoundClear.addComp( lblRoundBonus, Main.getGbc(0, 0, 0.5, 0.25) );
+		lblRoundBonusNum.setForeground(Color.YELLOW);
+		pnlRoundClear.addComp( lblRoundBonusNum, Main.getGbc(1, 0, 0.5, 0.25) );
+		//		2nd Row
+		lblTimeBonus.setForeground(Color.WHITE);
+		pnlRoundClear.addComp( lblTimeBonus, Main.getGbc(0, 1, 0.5, 0.25) );
+		lblTimeBonusNum.setForeground(Color.YELLOW);
+		pnlRoundClear.addComp( lblTimeBonusNum, Main.getGbc(1, 1, 0.5, 0.25) );
+		//		3rd Row
+		lblPerfectBonus.setForeground(Color.WHITE);
+		pnlRoundClear.addComp( lblPerfectBonus, Main.getGbc(0, 2, 0.5, 0.25) );
+		lblPerfectBonusNum.setForeground(Color.YELLOW);
+		pnlRoundClear.addComp( lblPerfectBonusNum, Main.getGbc(1, 2, 0.5, 0.25) );
+		//		4th Row
+		lblTotalScore.setForeground(Color.WHITE);
+		pnlRoundClear.addComp( lblTotalScore, Main.getGbc(0, 3, 0.5, 0.25) );
+		lblTotalScoreNum.setForeground(Color.YELLOW);
+		pnlRoundClear.addComp( lblTotalScoreNum, Main.getGbc(1, 3, 0.5, 0.25) );
+		
+		addMenu(panels, pnlRoundClear, "RoundClear");
 		
 		//	Game Over Screen
 		pnlGameOver.changeLayout( new GridBagLayout() );
@@ -179,23 +227,6 @@ public class Frame extends JFrame {
 	//Getters
 	public double getSizeMul() {
 		return sizeMul;
-	}
-	
-	
-	private GridBagConstraints getGbc(int x, int y, int width, int height, double weightX, double weightY) {
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.weightx = weightX;
-		gbc.weighty = weightY;
-		gbc.gridx = x;
-		gbc.gridy = y;
-		gbc.gridwidth = width;
-		gbc.gridheight = height;
-		return gbc;
-	}
-	
-	private GridBagConstraints getGbc(int x, int y, int width, int height) {
-		return getGbc(x, y, width, height, 1.0, 1.0);
 	}
 	
 	private void addMenu(JPanel parentPnl, JPanel childPnl, String name) {
@@ -227,7 +258,19 @@ public class Frame extends JFrame {
 				scheduleTimer("Play", 0, 10);
 				resetStratagem();
 				break;
+			case "RoundClear":
+				TextLabel[] aryText = {lblRoundBonus, lblRoundBonusNum, lblTimeBonus, lblTimeBonusNum, lblPerfectBonus, lblPerfectBonusNum,
+						lblTotalScore, lblTotalScoreNum};
+				for (TextLabel k : aryText) {
+					k.setText("");
+				}
+				
+				scheduleTimer("RoundClear", 500, 500);
+				time = MAX_TIME;
+				resetStratagem();
+				break;
 			case "GameOver":
+				lblFinalScoreNum.setText( Integer.toString(score) );
 				scheduleTimer("GameOver", 6000, 6000);
 		}
 	} //setMenu()
@@ -265,6 +308,34 @@ public class Frame extends JFrame {
 					}
 				};
 				break;
+			case "RoundClear":
+				int roundBonus = 75 + round * 25;
+				int timeBonus = (int)(time) * 10;
+				int perfectBonus = stratagemPerfect * 20;
+				int totalScore = score + roundBonus + timeBonus + perfectBonus;
+				score = totalScore;
+				timerTask = new TimerTask() {
+					int repeatTime = 0;
+					TextLabel[] aryText = {lblRoundBonus, lblRoundBonusNum, lblTimeBonus, lblTimeBonusNum, lblPerfectBonus, lblPerfectBonusNum,
+							lblTotalScore, lblTotalScoreNum};
+					String[] aryString = {"Round Bonus", Integer.toString(roundBonus), "Time Bonus", Integer.toString(timeBonus),
+							"Perfect Bonus", Integer.toString(perfectBonus), "Total Score", Integer.toString(totalScore)};
+					
+					@Override
+					public void run() {
+						if (repeatTime < 4) {
+							aryText[repeatTime * 2].setText( aryString[repeatTime * 2] );
+							aryText[repeatTime * 2 + 1].setText( aryString[repeatTime * 2 + 1] );
+						}
+						else if (repeatTime >= 9) {
+							round++;
+							setMenu("GetReady");
+							return;
+						}
+						repeatTime++;
+					}
+				};
+				break;
 			case "GameOver":
 				timerTask = new TimerTask() {
 					@Override
@@ -279,17 +350,44 @@ public class Frame extends JFrame {
 		timer.scheduleAtFixedRate(timerTask, delay, period);
 	} //scheduleTimer()
 	
-	private void setStratagemIndex(int index) {
-		stratagemIndex = index;
-		Image image = new ImageIcon( Main.getPath( aryStratagem[index].getString("image") ) ).getImage();
+	
+	private void resetStratagem() {
+		aryStratagem = stratagem.getRandStratagem(5 + round); //Get stratagem queue
+		lblPlayRoundNum.setText( Integer.toString(round) ); //Reload round
+		lblScoreNum.setText( Integer.toString(score) ); //Reload score
+		
+		//reset variables & draw queue
+		stratagemIndex = 0;
+		flagStratagemPerfect = true;
+		stratagemPerfect = 0;
+		drawStratagems();
+	}
+	
+	private void nextStratagem() {
+		time += 1.0d;
+		score += aryStratagem[stratagemIndex].getString("command").length() * 5;
+		lblScoreNum.setText( Integer.toString(score) ); //Reload score
+		flagStratagemPerfect = true;
+		stratagemIndex++;
+		
+		if (stratagemIndex >= aryStratagem.length) {
+			setMenu("RoundClear");
+			return;
+		}
+		
+		drawStratagems();
+	} //nextStratagem()
+	
+	private void drawStratagems() {
+		Image image = new ImageIcon( Main.getPath( aryStratagem[stratagemIndex].getString("image") ) ).getImage();
 		aryPnlStratagem[0].setImage(image);
-		lblStratagemName.setText( aryStratagem[index].getString("name") ); //Set label text
-		pnlCommand.setCommand( aryStratagem[index].getString("command") ); //Set Command Arrow Image
+		lblStratagemName.setText( aryStratagem[stratagemIndex].getString("name") ); //Set label text
+		pnlCommand.setCommand( aryStratagem[stratagemIndex].getString("command") ); //Set Command Arrow Image
 		
 		for (int i=1; i<6; i++) {
-			int fixedIndex = i + index;
+			int fixedIndex = i + stratagemIndex;
 			//Out of index
-			if (fixedIndex > aryStratagem.length) { //Out of index
+			if (fixedIndex >= aryStratagem.length) { //Out of index
 				image = null;
 			}
 			else {
@@ -299,21 +397,30 @@ public class Frame extends JFrame {
 		}
 	}
 	
-	private void resetStratagem() {
-		//Get stratagem queue
-		aryStratagem = stratagem.getRandStratagem(10); //#TODO Difficulty Setting
-		
-		//reset index & draw queue
-		setStratagemIndex(0);
-	}
-	
-	private void nextStratagem() {
-		setStratagemIndex(stratagemIndex + 1);
-	}
-	
 	
 	//KeyAdapter
 	private class InputListener extends KeyAdapter {
+		HashMap<Integer, Character> dictKey = new HashMap<>() {
+			private static final long serialVersionUID = 1L;
+		{
+			put(KeyEvent.VK_W, 'U');
+			put(KeyEvent.VK_S, 'D');
+			put(KeyEvent.VK_A, 'L');
+			put(KeyEvent.VK_D, 'R');
+			put(KeyEvent.VK_UP, 'U');
+			put(KeyEvent.VK_DOWN, 'D');
+			put(KeyEvent.VK_LEFT, 'L');
+			put(KeyEvent.VK_RIGHT, 'R');
+			put(KeyEvent.VK_KP_UP, 'U');
+			put(KeyEvent.VK_KP_DOWN, 'D');
+			put(KeyEvent.VK_KP_LEFT, 'L');
+			put(KeyEvent.VK_KP_RIGHT, 'R');
+			put(KeyEvent.VK_NUMPAD8, 'U');
+			put(KeyEvent.VK_NUMPAD5, 'D');
+			put(KeyEvent.VK_NUMPAD4, 'L');
+			put(KeyEvent.VK_NUMPAD6, 'R');
+		}};
+		
 		@Override
 		public void keyPressed(KeyEvent e) {
 			switch (strMenu) {
@@ -321,12 +428,25 @@ public class Frame extends JFrame {
 					setMenu("GetReady");
 					break;
 				case "Play":
-					//#TODO input command
+					if (dictKey.get( e.getKeyCode() ) == null) {
+						break;
+					}
+					if (dictKey.get( e.getKeyCode() ) == pnlCommand.getNextCmd() ) { //Correct Command
+						if ( pnlCommand.nextCmdIndex() ) {
+							stratagemPerfect += ( flagStratagemPerfect ? 1 : 0 );
+							nextStratagem();
+							break;
+						}
+					}
+					else { //Wrong Command
+						flagStratagemPerfect = false;
+						pnlCommand.resetCmdIndex();
+					}
 					break;
 			}
 		} //keyPressed()
 	}
-		
+	
 	
 	//ComponentAdapter
 	private class FrameListener extends ComponentAdapter {
@@ -337,5 +457,4 @@ public class Frame extends JFrame {
 			sizeMul = Math.min(widthMul, heightMul);
 		}
 	}
-	
 } //Frame Class
