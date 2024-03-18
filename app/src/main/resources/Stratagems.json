@@ -1,0 +1,368 @@
+[
+  {
+    "name": "SOS Beacon",
+    "category": "Mission",
+    "command": "UDRU",
+    "image": "/Stratagem_Icons/sos_beacon.png"
+  },
+  {
+    "name": "Seismic Probe",
+    "category": "Mission",
+    "command": "",
+    "image": "/Stratagem_Icons/seismic_probe.png"
+  },
+  {
+    "name": "Resupply",
+    "category": "Mission",
+    "command": "DDUR",
+    "image": "/Stratagem_Icons/resupply.png"
+  },
+  {
+    "name": "Reinforce",
+    "category": "Mission",
+    "command": "UDRLU",
+    "image": "/Stratagem_Icons/reinforce.png"
+  },
+  {
+    "name": "Hellbomb",
+    "category": "Mission",
+    "command": "DULDURDU",
+    "image": "/Stratagem_Icons/hellbomb.png"
+  },
+  {
+    "name": "Eagle Rearm",
+    "category": "Mission",
+    "command": "UULUR",
+    "image": "/Stratagem_Icons/eagle_rearm.png"
+  },
+  {
+    "name": "Upload Data",
+    "category": "Mission",
+    "command": "LRUUU",
+    "image": "/Stratagem_Icons/upload_data.png"
+  },
+  {
+    "name": "SSD Delivery",
+    "category": "Mission",
+    "command": "",
+    "image": "/Stratagem_Icons/upload_data.png"
+  },
+  {
+    "name": "Orbital Illumination Flare",
+    "category": "Mission",
+    "command": "",
+    "image": "/Stratagem_Icons/orbital_illumination_flare.png"
+  },
+  {
+    "name": "SEAF Artillery",
+    "category": "Mission",
+    "command": "RUUD",
+    "image": "/Stratagem_Icons/seaf_artillery.png"
+  },
+  {
+    "name": "Prospecting Drill",
+    "category": "Mission",
+    "command": "DDLRDD",
+    "image": "/Stratagem_Icons/prospecting_drill.png"
+  },
+  {
+    "name": "Super Earth Flag",
+    "category": "Mission",
+    "command": "DUDU",
+    "image": "/Stratagem_Icons/super_earth_flag.png"
+  },
+
+  {
+    "name": "\"Guard Dog\" Rover",
+    "category": "Backpacks",
+    "command": "DULURR",
+    "image": "/Stratagem_Icons/guard_dog_rover.png"
+  },
+  {
+    "name": "\"Guard Dog\"",
+    "category": "Backpacks",
+    "command": "DULURD",
+    "image": "/Stratagem_Icons/guard_dog.png"
+  },
+  {
+    "name": "Jump Pack",
+    "category": "Backpacks",
+    "command": "DUUDU",
+    "image": "/Stratagem_Icons/jump_pack.png"
+  },
+  {
+    "name": "Supply Pack",
+    "category": "Backpacks",
+    "command": "DLDUUD",
+    "image": "/Stratagem_Icons/supply_pack.png"
+  },
+  {
+    "name": "Shield Generator Pack",
+    "category": "Backpacks",
+    "command": "DULRLR",
+    "image": "/Stratagem_Icons/shield_generator_pack.png"
+  },
+  {
+    "name": "Ballistic Shield Backpack",
+    "category": "Backpacks",
+    "command": "DLDDUL",
+    "image": "/Stratagem_Icons/ballistic_shield_backpack.png"
+  },
+
+  {
+    "name": "Autocannon",
+    "category": "SupportWeapons",
+    "command": "DLDUUR",
+    "image": "/Stratagem_Icons/autocannon.png"
+  },
+  {
+    "name": "Expendable Anti-tank",
+    "category": "SupportWeapons",
+    "command": "DDLUR",
+    "image": "/Stratagem_Icons/expendable_anti_tank.png"
+  },
+  {
+    "name": "Flamethrower",
+    "category": "SupportWeapons",
+    "command": "DLUDU",
+    "image": "/Stratagem_Icons/flamethrower.png"
+  },
+  {
+    "name": "Laser Cannon",
+    "category": "SupportWeapons",
+    "command": "RDURD",
+    "image": "/Stratagem_Icons/laser_cannon.png"
+  },
+  {
+    "name": "Stalwart",
+    "category": "SupportWeapons",
+    "command": "DLDUUL",
+    "image": "/Stratagem_Icons/stalwart.png"
+  },
+  {
+    "name": "Machine Gun",
+    "category": "SupportWeapons",
+    "command": "DLDUR",
+    "image": "/Stratagem_Icons/machine_gun.png"
+  },
+  {
+    "name": "Arc Thrower",
+    "category": "SupportWeapons",
+    "command": "DRDULL",
+    "image": "/Stratagem_Icons/arc_thrower.png"
+  },
+  {
+    "name": "Grenade Launcher",
+    "category": "SupportWeapons",
+    "command": "DLULD",
+    "image": "/Stratagem_Icons/grenade_launcher.png"
+  },
+  {
+    "name": "Anti-Materiel Rifle",
+    "category": "SupportWeapons",
+    "command": "DLRUD",
+    "image": "/Stratagem_Icons/anti_materiel_rifle.png"
+  },
+  {
+    "name": "Railgun",
+    "category": "SupportWeapons",
+    "command": "DRDULR",
+    "image": "/Stratagem_Icons/railgun.png"
+  },
+  {
+    "name": "Recoilless Rifle",
+    "category": "SupportWeapons",
+    "command": "DLRRL",
+    "image": "/Stratagem_Icons/recoilless_rifle.png"
+  },
+  {
+    "name": "SPEAR Launcher",
+    "category": "SupportWeapons",
+    "command": "DDUDD",
+    "image": "/Stratagem_Icons/spear.png"
+  },
+
+  {
+    "name": "Patriot Exosuit",
+    "category": "Vehicles",
+    "command": "LDRULDD",
+    "image": "/Stratagem_Icons/patriot_exosuit.png"
+  },
+
+  {
+    "name": "Tesla Tower",
+    "category": "Defensive",
+    "command": "DURULR",
+    "image": "/Stratagem_Icons/tesla_tower.png"
+  },
+  {
+    "name": "Mortar Sentry",
+    "category": "Defensive",
+    "command": "DURRD",
+    "image": "/Stratagem_Icons/mortar_sentry.png"
+  },
+  {
+    "name": "EMS Mortar Sentry",
+    "category": "Defensive",
+    "command": "DURDR",
+    "image": "/Stratagem_Icons/ems_mortar_sentry.png"
+  },
+  {
+    "name": "Machine Gun Sentry",
+    "category": "Defensive",
+    "command": "DURRU",
+    "image": "/Stratagem_Icons/machine_gun_sentry.png"
+  },
+  {
+    "name": "Gatling Sentry",
+    "category": "Defensive",
+    "command": "DURL",
+    "image": "/Stratagem_Icons/gatling_sentry.png"
+  },
+  {
+    "name": "Anti-Personnel Minefield",
+    "category": "Defensive",
+    "command": "DLUR",
+    "image": "/Stratagem_Icons/anti_personnel_minefield.png"
+  },
+  {
+    "name": "Incendiary Mines",
+    "category": "Defensive",
+    "command": "DLLD",
+    "image": "/Stratagem_Icons/incendiary_mines.png"
+  },
+  {
+    "name": "Shield Generator Relay",
+    "category": "Defensive",
+    "command": "DULRLR",
+    "image": "/Stratagem_Icons/shield_generator_relay.png"
+  },
+  {
+    "name": "HMG Emplacement",
+    "category": "Defensive",
+    "command": "DULRRL",
+    "image": "/Stratagem_Icons/hmg_emplacement.png"
+  },
+  {
+    "name": "Autocannon Sentry",
+    "category": "Defensive",
+    "command": "DURULU",
+    "image": "/Stratagem_Icons/autocannon_sentry.png"
+  },
+  {
+    "name": "Rocket Sentry",
+    "category": "Defensive",
+    "command": "DURRL",
+    "image": "/Stratagem_Icons/rocket_sentry.png"
+  },
+
+  {
+    "name": "Orbital Precision Strike",
+    "category": "Orbital",
+    "command": "RRU",
+    "image": "/Stratagem_Icons/orbital_precision_strike.png"
+  },
+  {
+    "name": "Orbital Airbust Strike",
+    "category": "Orbital",
+    "command": "RRR",
+    "image": "/Stratagem_Icons/orbital_airburst_strike.png"
+  },
+  {
+    "name": "Orbital 120MM HE Barrage",
+    "category": "Orbital",
+    "command": "RRDLRD",
+    "image": "/Stratagem_Icons/orbital_120mm_he_barrage.png"
+  },
+  {
+    "name": "Orbital 380MM HE Barrage",
+    "category": "Orbital",
+    "command": "RDUULDD",
+    "image": "/Stratagem_Icons/orbital_380mm_he_barrage.png"
+  },
+  {
+    "name": "Orbital Walking Barrage",
+    "category": "Orbital",
+    "command": "RDRDRD",
+    "image": "/Stratagem_Icons/orbital_walking_barrage.png"
+  },
+  {
+    "name": "Orbital Laser",
+    "category": "Orbital",
+    "command": "RDURD",
+    "image": "/Stratagem_Icons/orbital_laser.png"
+  },
+  {
+    "name": "Orbital Railcannon Strike",
+    "category": "Orbital",
+    "command": "RUDDR",
+    "image": "/Stratagem_Icons/orbital_railcannon_strike.png"
+  },
+  {
+    "name": "Orbital Gatling Barrage",
+    "category": "Orbital",
+    "command": "RDLUU",
+    "image": "/Stratagem_Icons/orbital_gatling_barrage.png"
+  },
+  {
+    "name": "Orbital Gas Strike",
+    "category": "Orbital",
+    "command": "RRDR",
+    "image": "/Stratagem_Icons/orbital_gas_strike.png"
+  },
+  {
+    "name": "Orbital EMS Strike",
+    "category": "Orbital",
+    "command": "RRLD",
+    "image": "/Stratagem_Icons/orbital_ems_strike.png"
+  },
+  {
+    "name": "Orbital Smoke Strike",
+    "category": "Orbital",
+    "command": "RRDU",
+    "image": "/Stratagem_Icons/orbital_smoke_strike.png"
+  },
+
+  {
+    "name": "Eagle Strafing Run",
+    "category": "Eagle",
+    "command": "URR",
+    "image": "/Stratagem_Icons/eagle_strafing_run.png"
+  },
+  {
+    "name": "Eagle Airstrike",
+    "category": "Eagle",
+    "command": "URDR",
+    "image": "/Stratagem_Icons/eagle_airstrike.png"
+  },
+  {
+    "name": "Eagle Cluster Bomb",
+    "category": "Eagle",
+    "command": "URDDR",
+    "image": "/Stratagem_Icons/eagle_cluster_bomb.png"
+  },
+  {
+    "name": "Eagle Napalm Strike",
+    "category": "Eagle",
+    "command": "URDU",
+    "image": "/Stratagem_Icons/eagle_napalm_airstrike.png"
+  },
+  {
+    "name": "Eagle Smoke Strike",
+    "category": "Eagle",
+    "command": "URUD",
+    "image": "/Stratagem_Icons/eagle_smoke_strike.png"
+  },
+  {
+    "name": "Eagle 110MM Rocket Pods",
+    "category": "Eagle",
+    "command": "URUL",
+    "image": "/Stratagem_Icons/eagle_110mm_rocket_pods.png"
+  },
+  {
+    "name": "Eagle 500kg Bomb",
+    "category": "Eagle",
+    "command": "URDDD",
+    "image": "/Stratagem_Icons/eagle_500kg_bomb.png"
+  }
+]
