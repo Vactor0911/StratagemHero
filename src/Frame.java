@@ -73,14 +73,7 @@ public class Frame extends JFrame {
 	private String strMenu = "Main";
 	private int round = 1;
 	private int score = 0;
-<<<<<<< HEAD
 	private final double MAX_TIME = 10.0d;
-=======
-	private JSONObject[] aryStratagem;
-	private int stratagemIndex = 0;
-	private int commandIndex = 0;
-	private final double MAX_TIME = 12.0d;
->>>>>>> fbd1545c969db09f9b9bcf51105b9b79e6cf7740
 	private final double MAX_TIME_MUL = 1 / MAX_TIME;
 	private double time = 0.0d;
 	private Timer timer;
@@ -404,36 +397,12 @@ public class Frame extends JFrame {
 		}
 	}
 	
-<<<<<<< HEAD
 	
 	//KeyAdapter
 	private class InputListener extends KeyAdapter {
 		HashMap<Integer, Character> dictKey = new HashMap<>() {
 			private static final long serialVersionUID = 1L;
 		{
-=======
-	private void resetStratagem() {
-		commandIndex = 0;
-		//Get stratagem queue
-		aryStratagem = stratagem.getRandStratagem(10); //#TODO Difficulty Setting
-		
-		//reset index & draw queue
-		setStratagemIndex(0);
-	}
-	
-	private void nextStratagem() {
-		time += 1.0d;
-		score += aryStratagem[stratagemIndex].getString("command").length() * 5;
-		commandIndex = 0;
-		setStratagemIndex(stratagemIndex + 1);
-		//TODO Add Round Clear
-	}
-	
-	
-	//KeyAdapter
-	private class InputListener extends KeyAdapter {
-		HashMap<Integer, Character> dictKey = new HashMap<>() {{
->>>>>>> fbd1545c969db09f9b9bcf51105b9b79e6cf7740
 			put(KeyEvent.VK_W, 'U');
 			put(KeyEvent.VK_S, 'D');
 			put(KeyEvent.VK_A, 'L');
@@ -462,7 +431,6 @@ public class Frame extends JFrame {
 					if (dictKey.get( e.getKeyCode() ) == null) {
 						break;
 					}
-<<<<<<< HEAD
 					if (dictKey.get( e.getKeyCode() ) == pnlCommand.getNextCmd() ) { //Correct Command
 						if ( pnlCommand.nextCmdIndex() ) {
 							stratagemPerfect += ( flagStratagemPerfect ? 1 : 0 );
@@ -473,22 +441,6 @@ public class Frame extends JFrame {
 					else { //Wrong Command
 						flagStratagemPerfect = false;
 						pnlCommand.resetCmdIndex();
-=======
-					String fullCommand = aryStratagem[stratagemIndex].getString("command");
-					char nextCommand = fullCommand.charAt(commandIndex);
-					if (dictKey.get( e.getKeyCode() ) == nextCommand) { //Correct Command
-						commandIndex++;
-						
-						if (commandIndex >= fullCommand.length() ) {
-							nextStratagem();
-							break;
-						}
-						pnlCommand.setIndex(commandIndex);
-					}
-					else { //Wrong Command
-						commandIndex = 0;
-						pnlCommand.setIndex(commandIndex);
->>>>>>> fbd1545c969db09f9b9bcf51105b9b79e6cf7740
 					}
 					break;
 			}
