@@ -205,7 +205,13 @@ class TextLabel extends JLabel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        double sizeMul = Main.getFrame().getSizeMul();
+        Double sizeMul;
+        try {
+            sizeMul = Main.getFrame().getSizeMul();
+        }
+        catch (Exception e) {
+            return;
+        }
         if (Double.isNaN(sizeMul) || sizeMul <= 0) {
             return;
         }

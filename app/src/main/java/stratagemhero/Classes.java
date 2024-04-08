@@ -15,6 +15,14 @@ import java.util.HashMap;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.net.URL;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+
 class ColorizeFilter extends RGBImageFilter implements Serializable {
     private static final long serialVersionUID = 1L;
     private int color;
@@ -119,3 +127,44 @@ class Stratagem {
         return getRandStratagem(count, null);
     } // getRandStratagem()
 } // Stratagem Class
+
+class SoundPlayer {
+    private HashMap<String, URL> dictUrl = new HashMap<>();
+    private Clip clip;
+
+    public SoundPlayer() {
+        try {
+            clip = AudioSystem.getClip();
+        }
+        catch (Exception e) {}
+    }
+
+    public void playSound(String path, int loop) {
+        
+        URL soundUrl = dictUrl.get(path);
+        if (soundUrl == null) {
+            soundUrl = Main.getPath(path);
+            dictUrl.put(path, soundUrl);
+        }
+
+        try{
+            if ( clip.isOpen() ) {
+                clip.stop();
+                clip.flush();
+            }
+
+            clip = AudioSystem.getClip();
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundUrl);
+            clip.open(audioIn);
+            clip.loop(loop);
+
+            //Adjust Volume
+            FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue(-10.0f);
+
+            clip.start();
+        }
+        catch (Exception e) {}
+    }
+
+}

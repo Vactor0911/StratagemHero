@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.sound.sampled.Clip;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -79,12 +80,17 @@ public class Frame extends JFrame {
     private final double MAX_TIME_MUL = 1 / MAX_TIME;
     private double time = 0.0d;
     private Timer timer;
+
     // Stratagems
     private Stratagem stratagem = new Stratagem();
     private JSONObject[] aryStratagem;
     private int stratagemIndex = 0;
     private boolean flagStratagemPerfect = true;
     private int stratagemPerfect = 0;
+
+    // Sounds
+    SoundPlayer soundPlayerBgm = new SoundPlayer();
+    SoundPlayer soundPlayerEffect = new SoundPlayer();
 
     public Frame() {
         setTitle("Stratagem Hero");
@@ -250,15 +256,24 @@ public class Frame extends JFrame {
                 score = 0;
                 break;
             case "GetReady":
+                if (round == 1) {
+                    soundPlayerBgm.playSound("/Sounds/game_start.wav", 0);
+                }
+                else {
+                    soundPlayerBgm.playSound("/Sounds/level_start.wav", 0);
+                }
                 scheduleTimer("GetReady", 3000, 3000);
                 lblRoundNum.setText(Integer.toString(round));
                 break;
             case "Play":
+                soundPlayerBgm.playSound("/Sounds/game.wav", -1);
                 time = MAX_TIME; // reset time
                 scheduleTimer("Play", 0, 10);
                 resetStratagem();
                 break;
             case "RoundClear":
+                String soundId = Integer.toString(round - (round-1) / 4 * 4);
+                soundPlayerBgm.playSound("/Sounds/level_end" + soundId + ".wav", 0);
                 TextLabel[] aryText = { lblRoundBonus, lblRoundBonusNum, lblTimeBonus, lblTimeBonusNum, lblPerfectBonus,
                         lblPerfectBonusNum,
                         lblTotalScore, lblTotalScoreNum };
@@ -271,6 +286,7 @@ public class Frame extends JFrame {
                 resetStratagem();
                 break;
             case "GameOver":
+                soundPlayerBgm.playSound("/Sounds/game_over.wav", 0);
                 lblFinalScoreNum.setText(Integer.toString(score));
                 scheduleTimer("GameOver", 6000, 6000);
         }
@@ -366,6 +382,7 @@ public class Frame extends JFrame {
     }
 
     private void nextStratagem() {
+        soundPlayerEffect.playSound("/Sounds/command_success.wav", 0);
         time += 1.0d;
         score += aryStratagem[stratagemIndex].getString("command").length() * 5;
         lblScoreNum.setText(Integer.toString(score)); // Reload score
@@ -433,12 +450,14 @@ public class Frame extends JFrame {
                         break;
                     }
                     if (dictKey.get(e.getKeyCode()) == pnlCommand.getNextCmd()) { // Correct Command
+                        soundPlayerEffect.playSound("/Sounds/click.wav", 0);
                         if (pnlCommand.nextCmdIndex()) {
                             stratagemPerfect += (flagStratagemPerfect ? 1 : 0);
                             nextStratagem();
                             break;
                         }
                     } else { // Wrong Command
+                        soundPlayerEffect.playSound("/Sounds/command_fail.wav", 0);
                         flagStratagemPerfect = false;
                         pnlCommand.resetCmdIndex();
                     }
